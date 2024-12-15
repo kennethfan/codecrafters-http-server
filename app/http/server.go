@@ -37,6 +37,7 @@ func (server *Server) prepare(conn net.Conn) (*Request, *Response, error) {
 
 func (server *Server) dispatch(conn net.Conn) {
 	request, response, err := server.prepare(conn)
+	defer conn.Close()
 	fmt.Printf("request is: %+v\n", *request)
 	fmt.Printf("headers is: %+v\n", *(request.Headers()))
 	fmt.Printf("response is: %+v\n", *response)
