@@ -1,0 +1,298 @@
+{
+  "1xx": [
+    {
+      "status_code": 100,
+      "default_message": "Continue",
+      "description": "请求已接收，且正在继续处理"
+    },
+    {
+      "status_code": 101,
+      "default_message": "Switching Protocols",
+      "description": "切换协议"
+    },
+    {
+      "status_code": 102,
+      "default_message": "Processing",
+      "description": "处理请求"
+    }
+  ],
+  "2xx": [
+    {
+      "status_code": 200,
+      "default_message": "OK",
+      "description": "请求成功，服务器返回请求的数据"
+    },
+    {
+      "status_code": 201,
+      "default_message": "Created",
+      "description": "请求成功，且服务器创建了新的资源"
+    },
+    {
+      "status_code": 202,
+      "default_message": "Accepted",
+      "description": "请求已接受，但尚未处理"
+    },
+    {
+      "status_code": 203,
+      "default_message": "Non-Authoritative Information",
+      "description": "返回的元数据来自非原始服务器"
+    },
+    {
+      "status_code": 204,
+      "default_message": "No Content",
+      "description": "请求成功，但没有返回任何内容"
+    },
+    {
+      "status_code": 205,
+      "default_message": "Reset Content",
+      "description": "请求成功，要求客户端重置页面"
+    },
+    {
+      "status_code": 206,
+      "default_message": "Partial Content",
+      "description": "服务器成功处理了部分请求内容"
+    },
+    {
+      "status_code": 207,
+      "default_message": "Multi-Status",
+      "description": "处理多个操作的结果"
+    },
+    {
+      "status_code": 208,
+      "default_message": "Already Reported",
+      "description": "已经报告，避免重复包含资源"
+    },
+    {
+      "status_code": 226,
+      "default_message": "IM Used",
+      "description": "使用了 IM（实例化标识符）操作"
+    }
+  ],
+  "3xx": [
+    {
+      "status_code": 300,
+      "default_message": "Multiple Choices",
+      "description": "有多个选择，客户端可以选择其中一个"
+    },
+    {
+      "status_code": 301,
+      "default_message": "Moved Permanently",
+      "description": "永久重定向，资源已被永久移动"
+    },
+    {
+      "status_code": 302,
+      "default_message": "Found",
+      "description": "临时重定向，资源临时移动"
+    },
+    {
+      "status_code": 303,
+      "default_message": "See Other",
+      "description": "客户端应该通过另一个 URL 获取响应"
+    },
+    {
+      "status_code": 304,
+      "default_message": "Not Modified",
+      "description": "资源未被修改，客户端可以使用缓存的版本"
+    },
+    {
+      "status_code": 305,
+      "default_message": "Use Proxy",
+      "description": "请求应该通过指定的代理服务器处理"
+    },
+    {
+      "status_code": 306,
+      "default_message": "(Unused)",
+      "description": "保留状态码，未使用"
+    },
+    {
+      "status_code": 307,
+      "default_message": "Temporary Redirect",
+      "description": "临时重定向，客户端应按原路径进行请求"
+    },
+    {
+      "status_code": 308,
+      "default_message": "Permanent Redirect",
+      "description": "永久重定向，资源已经被永久迁移"
+    }
+  ],
+  "4xx": [
+    {
+      "status_code": 400,
+      "default_message": "Bad Request",
+      "description": "请求格式错误或缺少必需的参数"
+    },
+    {
+      "status_code": 401,
+      "default_message": "Unauthorized",
+      "description": "未授权，需要身份验证"
+    },
+    {
+      "status_code": 402,
+      "default_message": "Payment Required",
+      "description": "需要支付（目前未普遍使用）"
+    },
+    {
+      "status_code": 403,
+      "default_message": "Forbidden",
+      "description": "禁止访问，服务器拒绝处理请求"
+    },
+    {
+      "status_code": 404,
+      "default_message": "Not Found",
+      "description": "请求的资源不存在"
+    },
+    {
+      "status_code": 405,
+      "default_message": "Method Not Allowed",
+      "description": "请求方法不被允许"
+    },
+    {
+      "status_code": 406,
+      "default_message": "Not Acceptable",
+      "description": "请求的内容类型无法接受"
+    },
+    {
+      "status_code": 407,
+      "default_message": "Proxy Authentication Required",
+      "description": "需要代理身份验证"
+    },
+    {
+      "status_code": 408,
+      "default_message": "Request Timeout",
+      "description": "请求超时"
+    },
+    {
+      "status_code": 409,
+      "default_message": "Conflict",
+      "description": "请求与当前服务器状态冲突"
+    },
+    {
+      "status_code": 410,
+      "default_message": "Gone",
+      "description": "资源已永久删除"
+    },
+    {
+      "status_code": 411,
+      "default_message": "Length Required",
+      "description": "请求缺少 Content-Length 头部"
+    },
+    {
+      "status_code": 412,
+      "default_message": "Precondition Failed",
+      "description": "请求的先决条件失败"
+    },
+    {
+      "status_code": 413,
+      "default_message": "Payload Too Large",
+      "description": "请求体过大"
+    },
+    {
+      "status_code": 414,
+      "default_message": "URI Too Long",
+      "description": "请求的 URI 过长"
+    },
+    {
+      "status_code": 415,
+      "default_message": "Unsupported Media Type",
+      "description": "请求的媒体类型不受支持"
+    },
+    {
+      "status_code": 416,
+      "default_message": "Range Not Satisfiable",
+      "description": "请求的范围无效"
+    },
+    {
+      "status_code": 417,
+      "default_message": "Expectation Failed",
+      "description": "服务器无法满足 Expect 头部的要求"
+    },
+    {
+      "status_code": 418,
+      "default_message": "I'm a teapot",
+      "description": "我是一只茶壶（源于愚人节玩笑的 RFC 2324）"
+    },
+    {
+      "status_code": 421,
+      "default_message": "Misdirected Request",
+      "description": "请求发送到错误的服务器"
+    },
+    {
+      "status_code": 422,
+      "default_message": "Unprocessable Entity",
+      "description": "请求格式正确，但无法处理"
+    },
+    {
+      "status_code": 423,
+      "default_message": "Locked",
+      "description": "资源被锁定"
+    },
+    {
+      "status_code": 424,
+      "default_message": "Failed Dependency",
+      "description": "依赖失败"
+    },
+    {
+      "status_code": 425,
+      "default_message": "Too Early",
+      "description": "服务器不愿意处理请求，可能会因为协议的问题"
+    },
+    {
+      "status_code": 426,
+      "default_message": "Upgrade Required",
+      "description": "请求需要升高协议版本"
+    },
+    {
+      "status_code": 427,
+      "default_message": "Unassigned",
+      "description": "保留状态码"
+    },
+    {
+      "status_code": 428,
+      "default_message": "Precondition Required",
+      "description": "需要先决条件"
+    },
+    {
+      "status_code": 429,
+      "default_message": "Too Many Requests",
+      "description": "请求次数超出限制"
+    },
+    {
+      "status_code": 431,
+      "default_message": "Request Header Fields Too Large",
+      "description": "请求头字段过大"
+    },
+    {
+      "status_code": 451,
+      "default_message": "Unavailable For Legal Reasons",
+      "description": "由于法律原因无法处理请求"
+    }
+  ],
+  "5xx": [
+    {
+      "status_code": 500,
+      "default_message": "Internal Server Error",
+      "description": "服务器遇到错误，无法处理请求"
+    },
+    {
+      "status_code": 501,
+      "default_message": "Not Implemented",
+      "description": "服务器不支持当前请求所需的功能"
+    },
+    {
+      "status_code": 502,
+      "default_message": "Bad Gateway",
+      "description": "服务器作为网关或代理时收到无效响应"
+    },
+    {
+      "status_code": 503,
+      "default_message": "Service Unavailable",
+      "description": "服务不可用，通常是服务器过载或维护"
+    },
+    {
+      "status_code": 504,
+      "default_message": "Gateway Timeout",
+      "description": "网关超时，未能及时从上游服务器获得响应"
+    }
+  ]
+}
+

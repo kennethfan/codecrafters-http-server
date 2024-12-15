@@ -62,6 +62,10 @@ func (request *Request) Headers() *Headers {
 	return request.headers
 }
 
+func (request *Request) GetHeader(key string) (string, bool) {
+	return request.headers.Get(key)
+}
+
 func readLine(reader *bufio.Reader) (string, error) {
 	line, err := reader.ReadString('\n')
 	if err != nil {

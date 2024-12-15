@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"net"
+	"strings"
 )
 
 type Server struct {
@@ -36,25 +37,35 @@ func (server *Server) prepare(conn net.Conn) (*Request, *Response, error) {
 }
 
 func (server *Server) dispatch(conn net.Conn) {
-	request, response, err := server.prepare(conn)
-	defer conn.Close()
-	fmt.Printf("request is: %+v\n", *request)
-	fmt.Printf("headers is: %+v\n", *(request.Headers()))
-	fmt.Printf("response is: %+v\n", *response)
-	if err != nil {
-		fmt.Println("Error accepting connection: ", err)
-		return
-	}
+	for {
+		request, response, err := server.prepare(conn)
+		if err != nil {
+			fmt.Println("Error accepting connection: ", err)
+			conn.Close()
+			return
+		}
+		fmt.Printf("request is: %+v\n", *request)
+		fmt.Printf("headers is: %+v\n", *(request.Headers()))
+		fmt.Printf("response is: %+v\n", *response)
 
-	handler := server.dispatcher.Dispatch(request)
-	fmt.Printf("handler is: %+v\n", handler)
-	if handler == nil {
-		response.Status404()
-		return
-	}
-	err = handler.Handle(request, response)
-	if err != nil {
-		fmt.Println("Error accepting connection: ", err)
+		handler := server.dispatcher.Dispatch(request)
+		fmt.Printf("handler is: %+v\n", handler)
+		if handler == nil {
+			response.Status404()
+			response.End()
+			continue
+		}
+		err = handler.Handle(request, response)
+		if err != nil {
+			conn.Close()
+			fmt.Println("Error accepting connection: ", err)
+			return
+		}
+		connection, ok := response.GetHeader("connection")
+		if ok && strings.EqualFold(connection, "close") {
+			conn.Close()
+			return
+		}
 	}
 }
 

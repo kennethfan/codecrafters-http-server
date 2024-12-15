@@ -6,6 +6,7 @@ import (
 )
 
 const HeaderContentLength = "content-length"
+const HeaderContentType = "content-type"
 
 type Headers struct {
 	pairs map[string]string
@@ -22,6 +23,10 @@ func NewHeaders(pairs map[string]string) *Headers {
 func (headers *Headers) Get(key string) (string, bool) {
 	value, ok := headers.pairs[strings.ToLower(key)]
 	return value, ok
+}
+
+func (headers *Headers) Put(key string, value string) {
+	headers.pairs[strings.ToLower(key)] = value
 }
 
 func (headers *Headers) ContentLength() (int, error) {

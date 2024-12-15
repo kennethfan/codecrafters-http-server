@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/codecrafters-io/http-server-starter-go/app/example"
 	"github.com/codecrafters-io/http-server-starter-go/app/http"
 	"net"
 	"os"
@@ -24,5 +25,7 @@ func main() {
 		response.End()
 		return nil
 	})
+	server.AddHandler("/index.html", example.Html)
+	server.AddHandler("/status.json", example.Json)
 	server.Run()
 }
