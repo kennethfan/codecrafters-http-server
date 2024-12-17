@@ -1,6 +1,7 @@
 package core
 
 import (
+	"fmt"
 	"github.com/kennethfan/codecrafters-http-server/http/common"
 	"strconv"
 	"strings"
@@ -8,6 +9,19 @@ import (
 
 type Headers struct {
 	pairs map[string]string
+}
+
+func (headers *Headers) String() string {
+	if len(headers.pairs) == 0 {
+		return "{}"
+	}
+
+	var kvs []string
+	for key, value := range headers.pairs {
+		kvs = append(kvs, fmt.Sprintf("%s=%s", key, value))
+	}
+
+	return "{" + strings.Join(kvs, ", ") + "}"
 }
 
 func NewHeaders(pairs map[string]string) *Headers {

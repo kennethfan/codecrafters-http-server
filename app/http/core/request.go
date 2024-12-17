@@ -3,6 +3,7 @@ package core
 import (
 	"bufio"
 	"errors"
+	"fmt"
 	"strings"
 )
 
@@ -14,6 +15,11 @@ type Request struct {
 	headers    *Headers
 	bodyLength int
 	body       interface{}
+}
+
+func (request *Request) String() string {
+	return fmt.Sprintf("{protocol=%s, method=%s, url=%s, headers=%v, bodyLength=%d}",
+		request.protocol, request.method, request.url, request.headers, request.bodyLength)
 }
 
 func NewRequest(reader *bufio.Reader) (*Request, error) {
