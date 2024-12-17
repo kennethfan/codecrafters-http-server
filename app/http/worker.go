@@ -2,6 +2,7 @@ package http
 
 import (
 	"bufio"
+	"github.com/kennethfan/codecrafters-http-server/http/common"
 	"github.com/kennethfan/codecrafters-http-server/http/component"
 	"github.com/kennethfan/codecrafters-http-server/http/core"
 	"log"
@@ -31,18 +32,16 @@ func (worker *Worker) work(conn net.Conn) {
 	for {
 		request, response, err := worker.prepare(conn)
 		if err != nil {
-			log.Println("Error accepting connection: ", err)
+			log.Println("Error parse request: ", err)
 			conn.Close()
 			return
 		}
-		log.Printf("request is: %+v\n", *request)
-		log.Printf("headers is: %+v\n", *(request.Headers()))
-		log.Printf("response is: %+v\n", *response)
 
 		handler := worker.router.Dispatch(request)
-		log.Printf("handler is: %+v\n", handler)
 		if handler == nil {
-			response.Status404()
+			log.Printf("can not find handler, uri=%s, request=%v", request.Uri(), request)
+			response.SetStatus(common.StatusNotFound)
+			response.SetMessage(common.MessageNotFound)
 			response.End()
 			continue
 		}
@@ -51,10 +50,11 @@ func (worker *Worker) work(conn net.Conn) {
 		ok, err := chain.DoChain(request, response)
 		if err != nil {
 			conn.Close()
-			log.Println("Error accepting connection: ", err)
+			log.Println("Error handle request: ", err)
 			return
 		}
-		connection, ok := response.GetHeader("connection")
+		response.End()
+		connection, ok := response.GetHeader(common.HeaderConnection)
 		if ok && strings.EqualFold(connection, "close") {
 			conn.Close()
 			return

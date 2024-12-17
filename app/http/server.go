@@ -8,7 +8,6 @@ import (
 
 type Server struct {
 	address     string
-	contextPath string
 	router      component.Router
 	middlewares *component.Middlewares
 }
@@ -18,12 +17,6 @@ type ServerOption func(*Server)
 func WithAddress(address string) ServerOption {
 	return func(server *Server) {
 		server.address = address
-	}
-}
-
-func WithContextPath(contextPath string) ServerOption {
-	return func(server *Server) {
-		server.contextPath = contextPath
 	}
 }
 
