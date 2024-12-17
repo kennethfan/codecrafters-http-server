@@ -2,6 +2,7 @@ package component
 
 import (
 	"bufio"
+	"github.com/kennethfan/codecrafters-http-server/http/common"
 	"log"
 	"os"
 	"strings"
@@ -11,25 +12,27 @@ type MimeTypes interface {
 	ContentType(extension string) string
 }
 
-const DefaultContentType = "application/octet-stream"
-
 type DefaultMimeTypes struct {
 	mapping map[string]string
 }
 
 func (defaultMime *DefaultMimeTypes) ContentType(extension string) string {
+	if extension == "" {
+		return common.ContentTypeOctetStream
+	}
 	contentType, ok := defaultMime.mapping[extension]
 	if ok {
 		return contentType
 	}
 
-	return DefaultContentType
+	return common.ContentTypeOctetStream
 }
 
-func MimeTypeFromMapping(mapping map[string]string) *DefaultMimeTypes {
+func MimeTypeFromMapping(mapping map[string]string) MimeTypes {
+	log.Printf("MimeTypes from mapping, mapping=%v", mapping)
 	return &DefaultMimeTypes{mapping: mapping}
 }
-func MimeTypeFromFile(filename string) (*DefaultMimeTypes, error) {
+func MimeTypeFromFile(filename string) (MimeTypes, error) {
 	mapping := make(map[string]string)
 	file, err := os.Open(filename)
 	if err != nil {
@@ -46,6 +49,7 @@ func MimeTypeFromFile(filename string) (*DefaultMimeTypes, error) {
 			}
 			return nil, err
 		}
+		line = strings.TrimSuffix(line, ";")
 		line = strings.TrimSpace(line)
 		if len(line) == 0 {
 			continue
