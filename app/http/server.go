@@ -1,88 +1,79 @@
 package http
 
 import (
-	"bufio"
-	"fmt"
+	"github.com/kennethfan/codecrafters-http-server/http/component"
+	"log"
 	"net"
-	"strings"
 )
 
 type Server struct {
-	address    string
-	dispatcher *Dispatcher
+	address     string
+	contextPath string
+	router      component.Router
+	middlewares *component.Middlewares
 }
 
-func NewServer(address string) *Server {
-	return &Server{
-		address:    address,
-		dispatcher: NewDispatcher(),
+type ServerOption func(*Server)
+
+func WithAddress(address string) ServerOption {
+	return func(server *Server) {
+		server.address = address
 	}
 }
 
-func (server *Server) AddHandler(uri string, handle func(request *Request, response *Response) error) {
-	server.dispatcher.Register(uri, handle)
-}
-
-func (server *Server) prepare(conn net.Conn) (*Request, *Response, error) {
-	request, err := NewRequest(bufio.NewReader(conn))
-	if err != nil {
-		return nil, nil, err
-	}
-	response, err := NewResponse(bufio.NewWriter(conn), request.protocol)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	return request, response, nil
-}
-
-func (server *Server) dispatch(conn net.Conn) {
-	for {
-		request, response, err := server.prepare(conn)
-		if err != nil {
-			fmt.Println("Error accepting connection: ", err)
-			conn.Close()
-			return
-		}
-		fmt.Printf("request is: %+v\n", *request)
-		fmt.Printf("headers is: %+v\n", *(request.Headers()))
-		fmt.Printf("response is: %+v\n", *response)
-
-		handler := server.dispatcher.Dispatch(request)
-		fmt.Printf("handler is: %+v\n", handler)
-		if handler == nil {
-			response.Status404()
-			response.End()
-			continue
-		}
-		err = handler.Handle(request, response)
-		if err != nil {
-			conn.Close()
-			fmt.Println("Error accepting connection: ", err)
-			return
-		}
-		connection, ok := response.GetHeader("connection")
-		if ok && strings.EqualFold(connection, "close") {
-			conn.Close()
-			return
-		}
+func WithContextPath(contextPath string) ServerOption {
+	return func(server *Server) {
+		server.contextPath = contextPath
 	}
 }
 
-func (server *Server) Run() {
+func WithRouter(router component.Router) ServerOption {
+	return func(server *Server) {
+		server.router = router
+	}
+}
+
+func NewServer(options ...ServerOption) *Server {
+	server := new(Server)
+	for _, option := range options {
+		option(server)
+	}
+	if server.address == "" {
+		server.address = "0.0.0.0:4221"
+	}
+	if server.router == nil {
+		server.router = component.NewRouter()
+	}
+	server.middlewares = component.NewMiddlewares()
+	return server
+}
+
+func (server *Server) Router() component.Router {
+	return server.router
+}
+
+func (server *Server) Middlewares() *component.Middlewares {
+	return server.middlewares
+}
+
+func (server *Server) work(conn net.Conn) {
+	NewWorker(server.router, server.middlewares).work(conn)
+}
+
+func (server *Server) Start() {
 	l, err := net.Listen("tcp", server.address)
 	defer l.Close()
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 	for {
 		conn, err := l.Accept()
 
 		if err != nil {
-			fmt.Println("Error accepting connection: ", err)
+			log.Println("Error accepting connection: ", err)
 		}
 
-		go server.dispatch(conn)
+		go server.work(conn)
 	}
 }

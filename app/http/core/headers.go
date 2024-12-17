@@ -1,12 +1,10 @@
-package http
+package core
 
 import (
+	"github.com/kennethfan/codecrafters-http-server/http/common"
 	"strconv"
 	"strings"
 )
-
-const HeaderContentLength = "content-length"
-const HeaderContentType = "content-type"
 
 type Headers struct {
 	pairs map[string]string
@@ -30,7 +28,7 @@ func (headers *Headers) Put(key string, value string) {
 }
 
 func (headers *Headers) ContentLength() (int, error) {
-	value, ok := headers.Get(HeaderContentLength)
+	value, ok := headers.Get(common.HeaderContentLength)
 	if !ok {
 		return 0, nil
 	}

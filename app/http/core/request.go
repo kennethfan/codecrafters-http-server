@@ -1,4 +1,4 @@
-package http
+package core
 
 import (
 	"bufio"
@@ -52,6 +52,10 @@ func NewRequest(reader *bufio.Reader) (*Request, error) {
 func (request *Request) Uri() string {
 	parts := strings.SplitN(request.url, "?", 2)
 	return parts[0]
+}
+
+func (request *Request) Method() string {
+	return request.method
 }
 
 func (request *Request) Protocol() string {

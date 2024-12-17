@@ -1,8 +1,10 @@
-package http
+package core
 
 import (
 	"bufio"
 	"fmt"
+	"github.com/kennethfan/codecrafters-http-server/http/common"
+	"log"
 	"strconv"
 	"strings"
 )
@@ -26,15 +28,15 @@ func NewResponse(writer *bufio.Writer, protocol string) (*Response, error) {
 }
 
 func (response *Response) StatusOK() {
-	response.status = 200
-	response.message = "OK"
-	fmt.Sprintf("200 response is %+v\n", *response)
+	response.status = common.StatusOK
+	response.message = common.MessageOk
+	log.Printf("200 response is %+v\n", *response)
 }
 
 func (response *Response) Status404() {
-	response.status = 404
-	response.message = "Not Found"
-	fmt.Sprintf("404 response is %+v\n", *response)
+	response.status = common.StatusNotFound
+	response.message = common.MessageNotFound
+	log.Printf("404 response is %+v\n", *response)
 }
 
 func (response *Response) GetHeader(key string) (string, bool) {
@@ -60,21 +62,21 @@ func (response *Response) setBody(contentType string, encoding string, body []by
 	if encoding != "" {
 		contentType += "; charset=" + encoding
 	}
-	response.SetHeader(HeaderContentType, contentType)
+	response.SetHeader(common.HeaderContentType, contentType)
 	if body == nil {
 		return
 	}
-	response.SetHeader(HeaderContentLength, strconv.Itoa(len(body)))
+	response.SetHeader(common.HeaderContentLength, strconv.Itoa(len(body)))
 	response.body = body
 }
 
 func (response *Response) End() {
 	if response.body == nil {
-		response.headers.Put(HeaderContentLength, "0")
+		response.headers.Put(common.HeaderContentLength, "0")
 	}
-	fmt.Sprintf("end response is %+v\n", *response)
+	log.Printf("end response is %+v\n", *response)
 	responseLine := fmt.Sprintf("%s %d %s", response.protocol, response.status, response.message)
-	fmt.Printf("Response line : %s\n", responseLine)
+	log.Printf("Response line : %s\n", responseLine)
 	response.writer.WriteString(responseLine)
 	response.endLine()
 	for key, value := range response.headers.Pairs() {

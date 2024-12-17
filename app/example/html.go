@@ -1,13 +1,13 @@
 package example
 
 import (
-	"github.com/codecrafters-io/http-server-starter-go/app/http"
+	"github.com/kennethfan/codecrafters-http-server/http/core"
 	"log"
 	"os"
 )
 
-func Html(request *http.Request, response *http.Response) error {
-	filename := "app/resources/index.html"
+func Html(request *core.Request, response *core.Response) error {
+	filename := "resources/index.html"
 	pwd, _ := os.Getwd()
 	log.Printf("current path is %s", pwd)
 	content, err := os.ReadFile(filename)
